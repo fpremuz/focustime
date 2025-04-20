@@ -16,10 +16,15 @@ class FocusSessionsController < ApplicationController
 
     @task_durations = chart_scope.group(:task_id).sum(:duration).transform_keys { |id| Task.find_by(id: id)&.name || "Unknown Task" }
 
-    @task_pie_data = FocusSession
+    pie_scope = FocusSession
+    pie_scope = pie_scope.where(task_id: task_id) if task_id.present?
+    pie_scope = pie_scope.where(start_time: start_date.beginning_of_day..) if start_date
+    pie_scope = pie_scope.where(start_time: ..end_date.end_of_day) if end_date
+
+    @task_pie_data = pie_scope
       .joins(:task)
       .group("tasks.name")
-      .pluck("tasks.name, SUM(focus_sessions.duration)")
+      .sum(:duration)
 
     @today_breakdown = FocusSession
       .includes(:task)

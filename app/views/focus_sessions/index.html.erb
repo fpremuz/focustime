@@ -71,6 +71,29 @@
     <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">History</h2>
     <div class="mb-8">
       <h2 class="text-lg font-semibold text-blue-700 dark:text-white mb-2">Focus Time by Task</h2>
+      <div class="mb-6">
+      <%= form_with url: focus_sessions_path, method: :get, local: true, class: "flex flex-wrap items-end gap-4" do %>
+        <div>
+          <label for="start_date" class="block text-sm text-gray-700 dark:text-gray-200">Start Date</label>
+          <%= date_field_tag :start_date, params[:start_date], class: "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded px-3 py-2" %>
+        </div>
+        
+        <div>
+          <label for="end_date" class="block text-sm text-gray-700 dark:text-gray-200">End Date</label>
+          <%= date_field_tag :end_date, params[:end_date], class: "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded px-3 py-2" %>
+        </div>
+        
+        <div>
+          <%= submit_tag "Filter", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
+        </div>
+        
+        <% if params[:start_date].present? || params[:end_date].present? %>
+          <div>
+            <%= link_to "Clear", focus_sessions_path, class: "text-sm text-gray-500 hover:text-blue-600 underline" %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
       <%= bar_chart @task_durations, height: "300px", colors: ["#3b82f6"], library: {
         scales: {
           x: { title: { display: true, text: "Tasks" } },
@@ -82,6 +105,11 @@
         <h2 class="text-lg font-semibold text-blue-700 dark:text-white mb-2">Focus Time Distribution</h2>
         <%= pie_chart @task_pie_data, height: "300px", colors: ["#3b82f6", "#9333ea", "#f59e0b", "#10b981", "#ef4444"] %>
       </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-lg font-semibold text-blue-700 dark:text-white mb-2">Focus Time Breakdown</h2>
+      <%= pie_chart @task_pie_data, height: "300px", colors: ["#60a5fa", "#facc15", "#34d399", "#f87171", "#a78bfa"] %>
     </div>
 
     <div class="mb-8">
