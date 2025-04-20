@@ -1,0 +1,23 @@
+<div class="max-w-2xl mx-auto p-6">
+  <h1 class="text-3xl font-bold text-blue-700 mb-6">Tasks</h1>
+
+  <div class="mb-6">
+    <%= link_to "New Task", new_task_path, class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition" %>
+  </div>
+
+  <% if @tasks.any? %>
+    <ul class="space-y-4">
+      <% @tasks.each do |task| %>
+        <li class="bg-white shadow-md rounded p-4 flex justify-between items-start">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-800"><%= link_to task.name, task_path(task), class: "hover:underline" %></h2>          
+            <%= link_to "Edit", edit_task_path(task), class: "text-blue-600 hover:underline" %>
+            <%= link_to "Delete", task_path(task), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline" %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500">No tasks yet. Create one above ⬆️</p>
+  <% end %>
+</div>

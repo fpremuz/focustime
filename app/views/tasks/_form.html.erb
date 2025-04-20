@@ -1,0 +1,17 @@
+<%= form_with model: task, local: true do |form| %>
+  <div class="space-y-4">
+    <div>
+      <%= form.label :name, class: "block text-gray-700 dark:text-gray-200" %>
+      <%= form.text_field :name, class: "w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded px-3 py-2" %>
+    </div>
+
+    <div>
+      <%= form.label :description, class: "block text-gray-700 dark:text-gray-200" %>
+      <%= form.text_area :description, rows: 4, class: "w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded px-3 py-2" %>
+    </div>
+
+    <div>
+      <%= form.submit "Create Task", class: "cursor-pointer bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition" %>
+    </div>
+  </div>
+<% end %>

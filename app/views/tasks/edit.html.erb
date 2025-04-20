@@ -1,0 +1,28 @@
+<div class="max-w-xl mx-auto p-6 space-y-6">
+  <h1 class="text-2xl font-bold text-blue-800 dark:text-blue-300">Edit Task</h1>
+
+  <%= form_with model: @task, local: true do |form| %>
+    <div class="space-y-4">
+
+      <div class="flex items-center space-x-4">
+        <label style="width: 100px;" class="block font-medium text-gray-700 dark:text-gray-200">
+          <%= form.label :name, "Name" %>
+        </label>
+        <%= form.text_field :name, class: "flex-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+      </div>
+
+      <div class="flex items-start space-x-4">
+        <label style="width: 100px;" class="block font-medium text-gray-700 dark:text-gray-200 mt-2">
+          <%= form.label :description, "Description" %>
+        </label>
+        <%= form.text_area :description, rows: 4, class: "flex-1 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <%= form.submit "Update Task", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" %>
+        <%= link_to "Cancel", tasks_path, class: "text-sm text-gray-600 hover:underline dark:text-gray-300" %>
+      </div>
+
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,72 @@
+<div class="max-w-xl mx-auto p-6 space-y-6">
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-blue-800"><%= @task.name %></h1>
+    <div class="space-x-2">
+      <%= link_to "Edit", edit_task_path(@task),
+        class: "bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 text-sm" %>
+      <%= link_to "Back", tasks_path,
+        class: "bg-gray-300 text-gray-800 px-4 py-1 rounded hover:bg-gray-400 text-sm" %>
+    </div>
+  </div>
+
+  <p class="text-gray-700"><%= @task.description %></p>
+
+  <hr class="my-4">
+
+  <h2 class="text-xl font-semibold mb-2 text-gray-800">Focus Session</h2>
+
+  <% sessions = @task.focus_sessions.order(created_at: :desc) %>
+  <% active_session = @task.focus_sessions.where(end_time: nil).last %>
+
+  <% if active_session %>
+    <div class="bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 rounded">
+      <p>
+        <strong>Started at:</strong> <%= active_session.start_time.strftime("%H:%M:%S") %><br>
+        <strong>Elapsed:</strong> <span id="timer" class="font-mono text-lg text-red-600">00:00</span>
+      </p>
+      <%= button_to "End Session", task_session_path(@task, active_session), method: :delete,
+        class: "mt-3 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" %>
+    </div>
+
+    <script>
+      const startedAt = new Date("<%= active_session.start_time.iso8601 %>");
+      const timer = document.getElementById("timer");
+
+      function updateTimer() {
+        const now = new Date();
+        const diff = Math.floor((now - startedAt) / 1000);
+        const minutes = String(Math.floor(diff / 60)).padStart(2, '0');
+        const seconds = String(diff % 60).padStart(2, '0');
+        timer.textContent = `${minutes}:${seconds}`;
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    </script>
+  <% else %>
+    <%= button_to "Start Session", task_sessions_path(@task), method: :post,
+      class: "bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" %>
+  <% end %>
+
+  <hr class="my-6">
+
+  <h3 class="text-lg font-medium mb-2 text-gray-800">Session History</h3>
+  <% if @task.focus_sessions.any? %>
+    <ul class="space-y-2">
+      <% @task.focus_sessions.order(created_at: :desc).each do |session| %>
+        <li class="text-sm text-gray-700">
+          <strong>Start:</strong> <%= session.start_time.strftime("%H:%M") %>
+          <% if session.end_time %>
+            • <strong>End:</strong> <%= session.end_time.strftime("%H:%M") %>
+            • <strong>Duration:</strong>
+            <%= distance_of_time_in_words(session.start_time, session.end_time) %>
+          <% else %>
+            • <em>(In progress...)</em>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500">No sessions yet for this task.</p>
+  <% end %>
+</div>
