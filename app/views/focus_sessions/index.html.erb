@@ -5,6 +5,21 @@
 <div class="max-w-2xl mx-auto space-y-6 p-6 bg-white dark:bg-gray-800 rounded shadow">
   <h1 class="text-2xl font-bold text-blue-700 dark:text-white">Focus Sessions</h1>
 
+  <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded shadow mb-6">
+    <h2 class="text-lg font-semibold text-blue-800 dark:text-white mb-2">🧾 Focus Summary</h2>
+    <p class="text-sm text-gray-700 dark:text-gray-300">
+      ✅ <strong><%= distance_of_time_in_words(FocusSession.today_total_duration) %></strong> focused today.
+    </p>
+    <% if params[:start_date].present? || params[:end_date].present? %>
+      <p class="text-sm text-gray-700 dark:text-gray-300">
+        📆 From <%= params[:start_date] || "..." %> to <%= params[:end_date] || "..." %>: 
+        <strong>
+          <%= distance_of_time_in_words(@focus_sessions.sum(&:duration).seconds.ago, Time.current) %>
+        </strong>
+      </p>
+    <% end %>
+  </div>
+
   <p class="text-sm text-gray-600 dark:text-gray-300">
     🧘 You've focused for <strong><%= distance_of_time_in_words(FocusSession.today_total_duration) %></strong> today.
   </p>

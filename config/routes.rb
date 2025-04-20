@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "home/index"
   get "analytics/index"
   resources :tasks do
     resources :sessions, only: [:create, :destroy]
@@ -8,5 +9,5 @@ Rails.application.routes.draw do
 
   get "/analytics", to: "analytics#index"
 
-  root "tasks#index"
+  root "home#index"
 end
