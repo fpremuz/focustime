@@ -9,5 +9,5 @@ Rails.application.routes.draw do
 
   get "/analytics", to: "analytics#index"
 
-  root "focus_sessions#index"
+  root "home#index"
 end
